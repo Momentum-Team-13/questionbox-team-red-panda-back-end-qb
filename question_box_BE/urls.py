@@ -20,5 +20,7 @@ from question_box import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth/', include('djoser.urls.authtoken')),
     path('api/questions/', views.QuestionListView.as_view()),
 ]

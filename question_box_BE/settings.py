@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     'djoser',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -145,3 +146,11 @@ AUTH_USER_MODEL = 'question_box.User'
 
 django_on_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',),
+}
