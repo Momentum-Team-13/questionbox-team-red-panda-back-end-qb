@@ -8,4 +8,10 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ('id', 'user', 'title', 'description', 'favorited_by')
+        fields = ('pk', 'user', 'title', 'description', 'favorited_by')
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
