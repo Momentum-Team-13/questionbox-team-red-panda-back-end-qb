@@ -158,4 +158,4 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',),
 }
 
-CORS_ALLOW_ALL_ORIGIN = True
+CORS_ALLOW_ALL_ORIGINS = True
