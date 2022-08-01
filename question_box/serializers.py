@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from question_box.models import Question, User, Answer, Game
+from question_box.models import Category, Question, User, Answer, Game
 
 
 class QuestionSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field="username", read_only=True)
     favorited_by = serializers.SlugRelatedField(queryset=User.objects.all(), many=True, slug_field="username")
-    game = serializers.SlugRelatedField(queryset=Game.objects.all(), many=True, slug_field="game")
+    game = serializers.SlugRelatedField(slug_field="game", read_only=True)
 
     class Meta:
         model = Question
@@ -38,5 +38,5 @@ class GameSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Game
-        fields = ('id', 'category')
+        model = Category
+        fields = ('id', 'title')

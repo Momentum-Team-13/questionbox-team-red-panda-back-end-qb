@@ -12,6 +12,7 @@ django-extensions = "*"
 gunicorn = "*"
 djoser = "*"
 django-cors-headers = "*"
+django-filter = "*"
 
 [dev-packages]
 flake8 = "*"

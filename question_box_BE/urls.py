@@ -28,5 +28,4 @@ urlpatterns = [
     path('api/question/<int:pk>/answer/', views.AnswerListView.as_view()),
     path('api/games/', views.GamesListView.as_view()),
     path('api/categories/', views.CategoryListView.as_view()),
-    path('api/<int:game_pk>/questions/<int:pk>/', views.QuestionByGameView.as_view()),
 ]
