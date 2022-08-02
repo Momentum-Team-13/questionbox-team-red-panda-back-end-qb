@@ -132,4 +132,4 @@ class AnswerDestroyView(generics.RetrieveUpdateDestroyAPIView):
 class CategoryDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsAuthenticated]
