@@ -39,6 +39,7 @@ urlpatterns = [
     path('api/answer/<int:pk>/delete/', views.AnswerDestroyView.as_view()),
     # category view
     path('api/categories/', views.CategoryListView.as_view()),
+    path('api/category/<int:pk>/delete/', views.CategoryDestroyView.as_view()),
     # game views
     path('api/games/', views.CreateGameView.as_view()),
     path('api/category/<int:pk>/game/', views.GamesListView.as_view()),
