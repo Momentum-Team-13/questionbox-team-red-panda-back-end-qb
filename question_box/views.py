@@ -64,8 +64,7 @@ class CategoryListView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class QuestionByGameView(generics.RetrieveAPIView):
-    queryset = Question.objects.all()
-
-
-# user.FavoriteAnswer.all
+class CreateGameView(generics.ListCreateAPIView):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
+    permission_classes = [IsAuthenticated]
