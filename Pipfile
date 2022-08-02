@@ -13,6 +13,7 @@ gunicorn = "*"
 djoser = "*"
 django-cors-headers = "*"
 django-filter = "*"
+django-toggle-m2m = "*"
 
 [dev-packages]
 flake8 = "*"

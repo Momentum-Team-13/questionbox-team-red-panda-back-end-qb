@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django_toggle_m2m.toggle import ToggleManyToMany
 
 
 class BaseModel(models.Model):
@@ -33,22 +34,26 @@ class Game(models.Model):
         return self.game
 
 
-class Question(BaseModel):
+class Question(BaseModel, ToggleManyToMany):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='questions')
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=500)
     favorited_by = models.ManyToManyField(User, related_name='favorite_questions', blank=True)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='games', null=True)
 
+    TOGGLEABLE_FIELDS = ('favorited_by')
+
     def __str__(self):
         return self.title
 
 
-class Answer(BaseModel):
+class Answer(BaseModel, ToggleManyToMany):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answers')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answered_question')
     description = models.CharField(max_length=500)
     favorited_by = models.ManyToManyField(User, related_name='favorite_answers', blank=True)
+
+    TOGGLEABLE_FIELDS = ('favorited_by')
 
     def __str__(self):
         return self.description

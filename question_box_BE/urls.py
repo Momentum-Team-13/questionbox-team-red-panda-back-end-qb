@@ -18,18 +18,31 @@ from django.urls import path, include
 from question_box import views
 
 urlpatterns = [
+    # admin
     path('admin/', admin.site.urls),
+    # user authentication
     path('api-auth/', include('rest_framework.urls')),
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.authtoken')),
-    path('api/questions/', views.QuestionListView.as_view(), name='create_question'),
-    path('api/game/<int:pk>/question/', views.QuestionListView.as_view()),
-    path('api/questions/', views.QuestionListView.as_view()),
+    # question views
+    path('api/questions/', views.AddQuestionListView.as_view(), name='create_question'),
+    path('api/add/question/', views.AddQuestionListView.as_view()),
     path('api/questions/<int:pk>/', views.QuestionDetailView.as_view()),
-    path('api/add/question/', views.QuestionListView.as_view()),
+    path('api/game/<int:pk>/question/', views.QuestionListView.as_view()),
+    path('api/question/<int:pk>/delete/', views.QuestionDestroyView.as_view()),
+    # user views
+    path('api/user/<int:pk>/question/', views.UserQuestionListView.as_view()),
+    path('api/user/<int:pk>/answer/', views.UserAnswerListView.as_view()),
+    # path('api/user/<int:pk>/favorite/question/', views.UserFavoriteQuestionListView.as_view()),
+    # answer views
     path('api/question/<int:pk>/answer/', views.AnswerListView.as_view()),
-    path('api/games/', views.GamesListView.as_view()),
+    path('api/answer/<int:pk>/delete/', views.AnswerDestroyView.as_view()),
+    # category view
     path('api/categories/', views.CategoryListView.as_view()),
+    # game views
+    path('api/games/', views.CreateGameView.as_view()),
     path('api/category/<int:pk>/game/', views.GamesListView.as_view()),
-    path('api/add/game/', views.CreateGameView.as_view())
+    path('api/add/game/', views.CreateGameView.as_view()),
+    # favorite view
+    # path('api/questions/<int:question_pk>/favorites/', views.CreateFavoriteQuestionView.as_view(), name='favorite_questions'),
 ]
