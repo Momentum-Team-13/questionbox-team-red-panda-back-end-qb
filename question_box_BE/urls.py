@@ -23,9 +23,11 @@ urlpatterns = [
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.authtoken')),
     path('api/questions/', views.QuestionListView.as_view(), name='create_question'),
+    path('api/game/<int:pk>/question/', views.QuestionListView.as_view()),
     path('api/questions/<int:pk>/', views.QuestionDetailView.as_view()),
     path('api/add/question/', views.QuestionListView.as_view()),
     path('api/question/<int:pk>/answer/', views.AnswerListView.as_view()),
     path('api/games/', views.GamesListView.as_view()),
     path('api/categories/', views.CategoryListView.as_view()),
+    path('api/category/<int:pk>/game/', views.GamesListView.as_view()),
 ]
