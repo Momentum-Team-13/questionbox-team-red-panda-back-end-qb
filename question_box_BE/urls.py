@@ -31,4 +31,5 @@ urlpatterns = [
     path('api/games/', views.GamesListView.as_view()),
     path('api/categories/', views.CategoryListView.as_view()),
     path('api/category/<int:pk>/game/', views.GamesListView.as_view()),
+    path('api/add/game/', views.CreateGameView.as_view())
 ]
