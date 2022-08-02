@@ -3,10 +3,9 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from question_box.models import Category, Question, Answer, Game, Category, User
+from question_box.models import Category, Question, Answer, Game, User
 from question_box.permissions import IsOwner
 from .serializers import QuestionSerializer, AnswerSerializer, GameSerializer, CategorySerializer
-from .permissions import IsOwner
 
 
 class QuestionListView(generics.ListCreateAPIView):
@@ -129,3 +128,8 @@ class AnswerDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AnswerSerializer
     permission_classes = [IsAuthenticated, IsOwner]
 
+
+class CategoryDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
