@@ -1,12 +1,16 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from question_box.models import Category, Question, Answer, Game, Category
+from question_box.models import Category, Question, Answer, Game, Category, User
+from question_box.permissions import IsOwner
 from .serializers import QuestionSerializer, AnswerSerializer, GameSerializer, CategorySerializer
+from .permissions import IsOwner
 
 
 class QuestionListView(generics.ListCreateAPIView):
-    queryset = Question.objects.all()
+    # queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticated]
 
@@ -68,3 +72,60 @@ class CreateGameView(generics.ListCreateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
     permission_classes = [IsAuthenticated]
+
+
+class CreateFavoriteQuestionView(APIView):
+    
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        user = self.request.user
+        question = get_object_or_404(Question, pk=self.kwargs['question_pk'])
+        user.favorite_questions.add(question)
+        serializer = QuestionSerializer(question, context={'request': request})
+        return Response(serializer.data, status=201)
+
+
+class AddQuestionListView(generics.ListCreateAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class UserQuestionListView(generics.ListAPIView):
+
+    serializer_class = QuestionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Question.objects.filter(user_id=self.kwargs["pk"])
+
+    def perform_create(self, serializer):
+        user = get_object_or_404(User, pk=self.kwargs.get("pk"))
+        serializer.save(user=user)
+
+
+class UserAnswerListView(generics.ListAPIView):
+
+    serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Answer.objects.filter(user_id=self.kwargs["pk"])
+
+    def perform_create(self, serializer):
+        user = get_object_or_404(User, pk=self.kwargs.get("pk"))
+        serializer.save(user=user)
+
+
+class QuestionDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
+
+
+class AnswerDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
+

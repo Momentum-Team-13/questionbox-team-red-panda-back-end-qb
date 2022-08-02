@@ -29,7 +29,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
-    category = serializers.SlugRelatedField(slug_field="title", read_only=True)
+    # category = serializers.SlugRelatedField(slug_field="title", read_only=True)
 
     class Meta:
         model = Game
