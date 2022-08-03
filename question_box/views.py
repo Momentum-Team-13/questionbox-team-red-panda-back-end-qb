@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from question_box.models import Category, Question, Answer, Game, User
 from question_box.permissions import IsOwner
-from .serializers import QuestionSerializer, AnswerSerializer, GameSerializer, CategorySerializer, FavoriteSerializer
+from .serializers import QuestionSerializer, CreateAnswerSerializer, GameSerializer, CategorySerializer, ViewAnswerSerializer
 
 
 class QuestionListView(generics.ListCreateAPIView):
@@ -37,7 +37,7 @@ class QuestionDetailView(generics.RetrieveAPIView):
 
 class AnswerListView(generics.ListCreateAPIView):
     # queryset = Answer.objects.all()
-    serializer_class = AnswerSerializer
+    serializer_class = CreateAnswerSerializer
     # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -73,7 +73,7 @@ class CreateGameView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class CreateFavoriteQuestionView(APIView):
+class CreateOrRemoveFavoriteQuestionView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, **kwargs):
@@ -82,6 +82,13 @@ class CreateFavoriteQuestionView(APIView):
         user.favorite_questions.add(question)
         serializer = QuestionSerializer(question, context={'request': request})
         return Response(serializer.data, status=201)
+
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        question = get_object_or_404(Question, pk=self.kwargs['question_pk'])
+        user.favorite_questions.remove(question)
+        serializer = QuestionSerializer(question, context={'request': request})
+        return Response(serializer.data, status=204)
 
 
 class AddQuestionListView(generics.ListCreateAPIView):
@@ -105,7 +112,7 @@ class UserQuestionListView(generics.ListAPIView):
 
 class UserAnswerListView(generics.ListAPIView):
 
-    serializer_class = AnswerSerializer
+    serializer_class = ViewAnswerSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -124,7 +131,7 @@ class QuestionDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
 class AnswerDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Answer.objects.all()
-    serializer_class = AnswerSerializer
+    serializer_class = CreateAnswerSerializer
     permission_classes = [IsAuthenticated, IsOwner]
 
 
@@ -132,3 +139,11 @@ class CategoryDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
+
+
+class UserFavoriteQuestionsView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = QuestionSerializer
+
+    def get_queryset(self):
+        return self.request.user.favorite_questions.all()
