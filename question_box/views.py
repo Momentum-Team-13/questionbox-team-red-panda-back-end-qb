@@ -5,13 +5,13 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from question_box.models import Category, Question, Answer, Game, User
 from question_box.permissions import IsOwner
-from .serializers import QuestionSerializer, AnswerSerializer, GameSerializer, CategorySerializer
+from .serializers import QuestionSerializer, AnswerSerializer, GameSerializer, CategorySerializer, FavoriteSerializer
 
 
 class QuestionListView(generics.ListCreateAPIView):
     # queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Question.objects.filter(game_id=self.kwargs["pk"])
@@ -32,13 +32,13 @@ class QuestionListView(generics.ListCreateAPIView):
 class QuestionDetailView(generics.RetrieveAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 
 class AnswerListView(generics.ListCreateAPIView):
     # queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Answer.objects.filter(question_id=self.kwargs["pk"])
@@ -51,7 +51,7 @@ class AnswerListView(generics.ListCreateAPIView):
 class GamesListView(generics.ListCreateAPIView):
     # queryset = Game.objects.all()
     serializer_class = GameSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Game.objects.filter(category_id=self.kwargs["pk"])
@@ -64,7 +64,7 @@ class GamesListView(generics.ListCreateAPIView):
 class CategoryListView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 
 class CreateGameView(generics.ListCreateAPIView):
@@ -74,7 +74,6 @@ class CreateGameView(generics.ListCreateAPIView):
 
 
 class CreateFavoriteQuestionView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def post(self, request, **kwargs):

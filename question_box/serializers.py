@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field="username", read_only=True)
     favorited_by = serializers.SlugRelatedField(queryset=User.objects.all(), many=True, slug_field="username")
-    question = serializers.SlugRelatedField(slug_field="title", read_only=True)
+    # question = serializers.SlugRelatedField(slug_field="title", read_only=True)
 
     class Meta:
         model = Answer
@@ -29,7 +29,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
-    # category = serializers.SlugRelatedField(slug_field="title", read_only=True)
+    category = serializers.SlugRelatedField(slug_field="title", read_only=True)
 
     class Meta:
         model = Game
@@ -41,3 +41,11 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'title')
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Question
+        fields = ('id', 'favorited_by')
+
