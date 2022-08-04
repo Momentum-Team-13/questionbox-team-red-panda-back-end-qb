@@ -46,5 +46,7 @@ urlpatterns = [
     path('api/add/game/', views.CreateGameView.as_view()),
     # favorite view
     path('api/user/favorite/questions/', views.UserFavoriteQuestionsView.as_view()),
-    path('api/questions/<int:question_pk>/favorites/', views.CreateOrRemoveFavoriteQuestionView.as_view(), name='favorite_questions'),
+    path('api/questions/<int:question_pk>/favorites/', views.CreateOrRemoveFavoriteQuestionView.as_view(), name='favorite_answers'),
+    path('api/user/favorite/answers/', views.UserFavoriteAnswersView.as_view()),
+    path('api/answers/<int:answer_pk>/favorites/', views.CreateOrRemoveFavoriteAnswerView.as_view(), name='favorite_answers'),
 ]
