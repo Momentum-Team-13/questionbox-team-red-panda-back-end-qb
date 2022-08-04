@@ -73,24 +73,6 @@ class CreateGameView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class CreateOrRemoveFavoriteQuestionView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, **kwargs):
-        user = self.request.user
-        question = get_object_or_404(Question, pk=self.kwargs['question_pk'])
-        user.favorite_questions.add(question)
-        serializer = QuestionSerializer(question, context={'request': request})
-        return Response(serializer.data, status=201)
-
-    def delete(self, request, *args, **kwargs):
-        user = self.request.user
-        question = get_object_or_404(Question, pk=self.kwargs['question_pk'])
-        user.favorite_questions.remove(question)
-        serializer = QuestionSerializer(question, context={'request': request})
-        return Response(serializer.data, status=204)
-
-
 class AddQuestionListView(generics.ListCreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
@@ -141,9 +123,53 @@ class CategoryDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
 
+class CreateOrRemoveFavoriteQuestionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        user = self.request.user
+        question = get_object_or_404(Question, pk=self.kwargs['question_pk'])
+        user.favorite_questions.add(question)
+        serializer = QuestionSerializer(question, context={'request': request})
+        return Response(serializer.data, status=201)
+
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        question = get_object_or_404(Question, pk=self.kwargs['question_pk'])
+        user.favorite_questions.remove(question)
+        serializer = QuestionSerializer(question, context={'request': request})
+        return Response(serializer.data, status=204)
+
+
+class CreateOrRemoveFavoriteAnswerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        user = self.request.user
+        answer = get_object_or_404(Answer, pk=self.kwargs['answer_pk'])
+        user.favorite_answers.add(answer)
+        serializer = CreateAnswerSerializer(answer, context={'request': request})
+        return Response(serializer.data, status=201)
+
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        answer = get_object_or_404(Answer, pk=self.kwargs['answer_pk'])
+        user.favorite_answers.remove(answer)
+        serializer = CreateAnswerSerializer(answer, context={'request': request})
+        return Response(serializer.data, status=204)
+
+
 class UserFavoriteQuestionsView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = QuestionSerializer
 
     def get_queryset(self):
         return self.request.user.favorite_questions.all()
+
+
+class UserFavoriteAnswersView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = CreateAnswerSerializer
+
+    def get_queryset(self):
+        return self.request.user.favorite_answers.all()
