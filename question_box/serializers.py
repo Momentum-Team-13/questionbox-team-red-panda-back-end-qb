@@ -4,8 +4,8 @@ from question_box.models import Category, Question, User, Answer, Game
 
 class QuestionSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field="username", read_only=True)
-    favorited_by = serializers.SlugRelatedField(queryset=User.objects.all(), many=True, slug_field="username")
     game = serializers.SlugRelatedField(slug_field="game", read_only=True)
+    favorited_by = serializers.SlugRelatedField(queryset=User.objects.all(), many=True, slug_field="username")
 
     class Meta:
         model = Question
@@ -56,7 +56,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Question
         fields = ('id', 'favorited_by')

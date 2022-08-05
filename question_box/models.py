@@ -40,8 +40,6 @@ class Question(BaseModel):
     favorited_by = models.ManyToManyField(User, related_name='favorite_questions', blank=True)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='games', null=True)
 
-    TOGGLEABLE_FIELDS = ('favorited_by')
-
     def __str__(self):
         return self.title
 
@@ -51,8 +49,6 @@ class Answer(BaseModel):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answered_question')
     description = models.CharField(max_length=500)
     favorited_by = models.ManyToManyField(User, related_name='favorite_answers', blank=True)
-
-    TOGGLEABLE_FIELDS = ('favorited_by')
 
     def __str__(self):
         return self.description

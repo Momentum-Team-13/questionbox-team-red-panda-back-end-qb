@@ -21,14 +21,6 @@ class QuestionListView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user, game=game)
 
 
-    # def get_queryset(self):
-    #     queryset = Question.objects.all()
-    #     search_term = self.request.query_params
-    #     if search_term is not None:
-    #         pass
-    #     return queryset
-
-
 class QuestionDetailView(generics.RetrieveAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
@@ -77,6 +69,9 @@ class AddQuestionListView(generics.ListCreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class UserQuestionListView(generics.ListAPIView):
@@ -160,16 +155,16 @@ class CreateOrRemoveFavoriteAnswerView(APIView):
 
 
 class UserFavoriteQuestionsView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
     serializer_class = QuestionSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return self.request.user.favorite_questions.all()
 
 
 class UserFavoriteAnswersView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
     serializer_class = CreateAnswerSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return self.request.user.favorite_answers.all()
